@@ -29,14 +29,14 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
-            this.rbFormualChange = new System.Windows.Forms.RadioButton();
             this.rbColorantForChange = new System.Windows.Forms.RadioButton();
+            this.rbFormualChange = new System.Windows.Forms.RadioButton();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.btnexport = new System.Windows.Forms.Button();
+            this.btngen = new System.Windows.Forms.Button();
             this.btnopen = new System.Windows.Forms.Button();
             this.MainMenu = new System.Windows.Forms.MenuStrip();
             this.tmclose = new System.Windows.Forms.ToolStripMenuItem();
-            this.btngen = new System.Windows.Forms.Button();
-            this.btnexport = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.MainMenu.SuspendLayout();
@@ -51,18 +51,7 @@
             this.panel1.Location = new System.Drawing.Point(0, 25);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(243, 53);
-            this.panel1.TabIndex = 0;
-            // 
-            // rbFormualChange
-            // 
-            this.rbFormualChange.AutoSize = true;
-            this.rbFormualChange.Location = new System.Drawing.Point(13, 8);
-            this.rbFormualChange.Name = "rbFormualChange";
-            this.rbFormualChange.Size = new System.Drawing.Size(71, 16);
-            this.rbFormualChange.TabIndex = 0;
-            this.rbFormualChange.TabStop = true;
-            this.rbFormualChange.Text = "格式转换";
-            this.rbFormualChange.UseVisualStyleBackColor = true;
+            this.panel1.TabIndex = 1;
             // 
             // rbColorantForChange
             // 
@@ -75,6 +64,17 @@
             this.rbColorantForChange.Text = "色母相关格式转换";
             this.rbColorantForChange.UseVisualStyleBackColor = true;
             // 
+            // rbFormualChange
+            // 
+            this.rbFormualChange.AutoSize = true;
+            this.rbFormualChange.Location = new System.Drawing.Point(13, 8);
+            this.rbFormualChange.Name = "rbFormualChange";
+            this.rbFormualChange.Size = new System.Drawing.Size(71, 16);
+            this.rbFormualChange.TabIndex = 0;
+            this.rbFormualChange.TabStop = true;
+            this.rbFormualChange.Text = "格式转换";
+            this.rbFormualChange.UseVisualStyleBackColor = true;
+            // 
             // panel2
             // 
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
@@ -85,7 +85,25 @@
             this.panel2.Location = new System.Drawing.Point(0, 78);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(243, 122);
-            this.panel2.TabIndex = 1;
+            this.panel2.TabIndex = 2;
+            // 
+            // btnexport
+            // 
+            this.btnexport.Location = new System.Drawing.Point(27, 75);
+            this.btnexport.Name = "btnexport";
+            this.btnexport.Size = new System.Drawing.Size(191, 23);
+            this.btnexport.TabIndex = 2;
+            this.btnexport.Text = "导出EXCEL";
+            this.btnexport.UseVisualStyleBackColor = true;
+            // 
+            // btngen
+            // 
+            this.btngen.Location = new System.Drawing.Point(27, 46);
+            this.btngen.Name = "btngen";
+            this.btngen.Size = new System.Drawing.Size(191, 23);
+            this.btngen.TabIndex = 1;
+            this.btngen.Text = "运算";
+            this.btngen.UseVisualStyleBackColor = true;
             // 
             // btnopen
             // 
@@ -104,7 +122,7 @@
             this.MainMenu.Location = new System.Drawing.Point(0, 0);
             this.MainMenu.Name = "MainMenu";
             this.MainMenu.Size = new System.Drawing.Size(243, 25);
-            this.MainMenu.TabIndex = 2;
+            this.MainMenu.TabIndex = 0;
             this.MainMenu.Text = "MainMenu";
             // 
             // tmclose
@@ -112,24 +130,6 @@
             this.tmclose.Name = "tmclose";
             this.tmclose.Size = new System.Drawing.Size(44, 21);
             this.tmclose.Text = "关闭";
-            // 
-            // btngen
-            // 
-            this.btngen.Location = new System.Drawing.Point(27, 46);
-            this.btngen.Name = "btngen";
-            this.btngen.Size = new System.Drawing.Size(191, 23);
-            this.btngen.TabIndex = 1;
-            this.btngen.Text = "运算";
-            this.btngen.UseVisualStyleBackColor = true;
-            // 
-            // btnexport
-            // 
-            this.btnexport.Location = new System.Drawing.Point(27, 75);
-            this.btnexport.Name = "btnexport";
-            this.btnexport.Size = new System.Drawing.Size(191, 23);
-            this.btnexport.TabIndex = 2;
-            this.btnexport.Text = "导出EXCEL";
-            this.btnexport.UseVisualStyleBackColor = true;
             // 
             // Main
             // 

@@ -171,5 +171,120 @@ namespace CroMaxChangeFrm.DB
             }
             return dt;
         }
+
+        /// <summary>
+        /// 导出EXCEL的临时表
+        /// </summary>
+        /// <returns></returns>
+        public DataTable Get_Exportdt()
+        {
+            var dt = new DataTable();
+            for (var i = 0; i < 24; i++)
+            {
+                var dc = new DataColumn();
+
+                switch (i)
+                {
+                    case 0:
+                        dc.ColumnName = "车厂";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    case 1:
+                        dc.ColumnName = "颜色代码";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    case 2:
+                        dc.ColumnName = "颜色名称";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    case 3:
+                        dc.ColumnName = "适用车型";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    case 4:
+                        dc.ColumnName = "品牌";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    case 5:
+                        dc.ColumnName = "涂层";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    case 6:
+                        dc.ColumnName = "差异色";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    case 7:
+                        dc.ColumnName = "年份";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    case 8:
+                        dc.ColumnName = "色版来源";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    case 9:
+                        dc.ColumnName = "配方号";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    case 10:
+                        dc.ColumnName = "颜色索引号";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    case 11:
+                        dc.ColumnName = "制作日期";
+                        dc.DataType = Type.GetType("System.DateTime"); 
+                        break;
+                    case 12:
+                        dc.ColumnName = "制作人";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    case 13:
+                        dc.ColumnName = "录入日期";
+                        dc.DataType = Type.GetType("System.DateTime");
+                        break;
+                    case 14:
+                        dc.ColumnName = "录入人";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    case 15:
+                        dc.ColumnName = "审核日期";
+                        dc.DataType = Type.GetType("System.DateTime");
+                        break;
+                    case 16:
+                        dc.ColumnName = "审核人";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    case 17:
+                        dc.ColumnName = "颜色索引号";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    case 18:
+                        dc.ColumnName = "备注";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    case 19:
+                        dc.ColumnName = "来源分类";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    case 20:
+                        dc.ColumnName = "色母";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    case 21:
+                        dc.ColumnName = "色母名称";
+                        dc.DataType = Type.GetType("System.String");
+                        break;
+                    case 22:
+                        dc.ColumnName = "量(克)";
+                        dc.DataType = Type.GetType("System.Decimal"); 
+                        break;
+                    case 23:
+                        dc.ColumnName = "累计量(克)";
+                        dc.DataType = Type.GetType("System.Decimal");
+                        break;
+                }
+                dt.Columns.Add(dc);
+            }
+            return dt;
+        }
     }
 }

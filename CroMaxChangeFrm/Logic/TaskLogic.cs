@@ -14,6 +14,9 @@ namespace CroMaxChangeFrm.Logic
         private DataTable _dt;             //获取dt(从EXCEL获取的DT)
         private int _typeid;               //获取格式转换类型ID(0:格式转换 1:色母相关格式转换)
 
+        private DataTable _tempdt;         //保存运算成功的表头DT(导出时使用)
+        private DataTable _tempdtldt;      //保存运算成功的表体DT(导出时使用)
+
         private DataTable _resultTable;   //返回DT
         private bool _resultMark;        //返回是否成功标记
 
@@ -49,6 +52,16 @@ namespace CroMaxChangeFrm.Logic
             ///  返回是否成功标记
             /// </summary>
             public bool ResultMark => _resultMark;
+
+            /// <summary>
+            /// 返回运算成功的表头DT(导出时使用)
+            /// </summary>
+            public DataTable Tempdt => _tempdt;
+
+            /// <summary>
+            /// 返回运算成功的表体DT(导出时使用)
+            /// </summary>
+            public DataTable Tempdtldt => _tempdtldt;
         #endregion
 
         public void StartTask()
@@ -63,11 +76,11 @@ namespace CroMaxChangeFrm.Logic
                     break;
                 //运算
                 case 1:
-
+                    GenerateRecord(_typeid,_dt);
                     break;
                 //导出
                 case 2:
-
+                    ExportDtToExcel(_fileAddress,_tempdt,_tempdtldt);
                     break;
             }
         }
@@ -76,12 +89,32 @@ namespace CroMaxChangeFrm.Logic
         /// 导入
         /// </summary>
         /// <param name="fileAddress"></param>
+        /// <param name="typeid">获取格式转换类型ID(0:格式转换 1:色母相关格式转换)</param>
         private void OpenExcelImporttoDt(string fileAddress)
         {
             _resultTable = importDt.OpenExcelImporttoDt(fileAddress);
         }
 
+        /// <summary>
+        /// 运算
+        /// </summary>
+        /// <param name="typeid"></param>
+        /// <param name="dt">从EXCEL导入过来的DT</param>
+        private void GenerateRecord(int typeid,DataTable dt)
+        {
+            
+        }
 
+        /// <summary>
+        /// 导出
+        /// </summary>
+        /// <param name="fileAddress"></param>
+        /// <param name="tempdt"></param>
+        /// <param name="tempdtldt"></param>
+        private void ExportDtToExcel(string fileAddress, DataTable tempdt, DataTable tempdtldt)
+        {
+            
+        }
 
     }
 }

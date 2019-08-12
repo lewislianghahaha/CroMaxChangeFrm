@@ -14,11 +14,16 @@ namespace CroMaxChangeFrm
 
         //保存EXCEL导入的DT
         private DataTable _importdt=new DataTable();
+        //保存运算成功的表头DT(导出时使用)
+        private DataTable _tempdt;
+        //保存运算成功的表体DT(导出时使用)
+        private DataTable _tempdtldt;      
 
         public Main()
         {
             InitializeComponent();
             OnRegisterEvents();
+            OnShow();
         }
 
         private void OnRegisterEvents()
@@ -27,6 +32,12 @@ namespace CroMaxChangeFrm
             btnopen.Click += Btnopen_Click;
             btngen.Click += Btngen_Click;
             btnexport.Click += Btnexport_Click;
+        }
+
+        private void OnShow()
+        {
+            rbFormualChange.Checked = false;
+            rbColorantForChange.Checked = false;
         }
 
         /// <summary>
@@ -38,7 +49,7 @@ namespace CroMaxChangeFrm
         {
             try
             {
-                if(rbColorantForChange.Checked==false || rbFormualChange.Checked==false) throw new Exception("请选择任意一种转换格式进行转换");
+                if(rbColorantForChange.Checked==false && rbFormualChange.Checked==false) throw new Exception("请选择任意一种转换格式进行转换");
 
                 var openFileDialog = new OpenFileDialog { Filter = "Xlsx文件|*.xlsx" };
                 if (openFileDialog.ShowDialog() != DialogResult.OK) return;
@@ -47,7 +58,6 @@ namespace CroMaxChangeFrm
                 //将所需的值赋到Task类内
                 task.TaskId = 0;
                 task.FileAddress = fileAdd;
-                task.Typeid = rbFormualChange.Checked ? 0 : 1;
 
                 //使用子线程工作(作用:通过调用子线程进行控制Load窗体的关闭情况)
                 new Thread(Start).Start();
@@ -64,11 +74,10 @@ namespace CroMaxChangeFrm
 
                     if (MessageBox.Show(clickMessage, "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
                     {
-                        if(!Generatedt(_importdt)) throw new Exception("运算不成功,请联系管理员");
+                        if(!Generatedt(_importdt,rbFormualChange.Checked ? 0 : 1)) throw new Exception("运算不成功,请联系管理员");
                         else if(MessageBox.Show(clickMes, "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
                         {
-                            if(!Exportdt(_importdt)) throw new Exception("导出不成功,请联系管理员");
-                            MessageBox.Show($"导出成功,请打开相关文件进行查阅", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            Exportdt();
                         }
                     }
                 }
@@ -89,7 +98,7 @@ namespace CroMaxChangeFrm
             try
             {
                 if(_importdt.Rows.Count==0)throw new Exception("没有成功导入EXCEL文件,不能执行运算操作");
-                if(!Generatedt(_importdt)) throw new Exception("运算不成功,请联系管理员");
+                if(!Generatedt(_importdt, rbFormualChange.Checked ? 0 : 1)) throw new Exception("运算不成功,请联系管理员");
                 MessageBox.Show($"运算成功,请点击导出按钮", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
@@ -108,8 +117,7 @@ namespace CroMaxChangeFrm
             try
             {
                 if(_importdt.Rows.Count==0)throw new Exception("没有成功导入EXCEL文件,不能执行导出操作");
-                if(!Exportdt(_importdt)) throw new Exception("导出不成功,请联系管理员");
-                MessageBox.Show($"导出成功,请打开相关文件进行查阅", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                Exportdt();
             }
             catch (Exception ex)
             {
@@ -150,12 +158,23 @@ namespace CroMaxChangeFrm
         /// <summary>
         /// 运算功能
         /// </summary>
-        bool Generatedt(DataTable dt)
+        bool Generatedt(DataTable dt,int typeid)
         {
             var result = true;
             try
             {
+                task.TaskId = 2;
+                task.Typeid = typeid;
+                task.Data = dt;
 
+                //使用子线程工作(作用:通过调用子线程进行控制Load窗体的关闭情况)
+                new Thread(Start).Start();
+                load.StartPosition = FormStartPosition.CenterScreen;
+                load.ShowDialog();
+
+                result = task.ResultMark;
+                _tempdt = task.Tempdt;
+                _tempdtldt = task.Tempdtldt;
             }
             catch (Exception)
             {
@@ -167,18 +186,33 @@ namespace CroMaxChangeFrm
         /// <summary>
         /// 导出功能
         /// </summary>
-        bool Exportdt(DataTable dt)
+        void Exportdt()
         {
-            var result = true;
             try
             {
+                var saveFileDialog = new SaveFileDialog { Filter = "Xlsx文件|*.xlsx" };
+                if (saveFileDialog.ShowDialog() != DialogResult.OK) return;
+                var fileAdd = saveFileDialog.FileName;
+
+                task.TaskId = 3;
+                task.FileAddress = fileAdd;
+
+                //使用子线程工作(作用:通过调用子线程进行控制Load窗体的关闭情况)
+                new Thread(Start).Start();
+                load.StartPosition = FormStartPosition.CenterScreen;
+                load.ShowDialog();
+
+                if (!task.ResultMark) throw new Exception("导出异常");
+                else
+                {
+                    MessageBox.Show($"导出成功!可从EXCEL中查阅导出效果", "成功", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                result = false;
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            return result;
         }
 
     }
