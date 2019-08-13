@@ -38,7 +38,8 @@ namespace CroMaxChangeFrm.Logic
         private DataTable OpenExcelToDataTable(string fileAddress)
         {
             IWorkbook wk;
-
+            //定义ID变量
+            var id = 1;
             //创建表标题
             var dt = dtList.Get_Importdt();
 
@@ -62,23 +63,32 @@ namespace CroMaxChangeFrm.Logic
                     //读取每列
                     for (var j = 0; j < row.Cells.Count; j++)
                     {
-                        //循环获取行中的单元格
-                        var cell = row.GetCell(j);
-                        var cellValue = GetCellValue(cell);
-                        if (cellValue == string.Empty)
+                        if (j == 0)
                         {
-                            continue;
+                            dr[0] = id;
                         }
                         else
                         {
-                            dr[j] = cellValue;
-                        }
+                            //循环获取行中的单元格
+                            var cell = row.GetCell(j);
+                            var cellValue = GetCellValue(cell);
+                            if (cellValue == string.Empty)
+                            {
+                                continue;
+                            }
+                            else
+                            {
+                                dr[j] = cellValue;
+                            }
 
-                        //全为空就不取
-                        if (dr[j].ToString() != "")
-                        {
-                            result = true;
+                            //全为空就不取
+                            if (dr[j].ToString() != "")
+                            {
+                                result = true;
+                            }
                         }
+                        //自增ID值
+                        id++;
                     }
 
                     if (result == true)

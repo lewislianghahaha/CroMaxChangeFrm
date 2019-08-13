@@ -89,7 +89,6 @@ namespace CroMaxChangeFrm.Logic
         /// 导入
         /// </summary>
         /// <param name="fileAddress"></param>
-        /// <param name="typeid">获取格式转换类型ID(0:格式转换 1:色母相关格式转换)</param>
         private void OpenExcelImporttoDt(string fileAddress)
         {
             _resultTable = importDt.OpenExcelImporttoDt(fileAddress);
@@ -98,23 +97,25 @@ namespace CroMaxChangeFrm.Logic
         /// <summary>
         /// 运算
         /// </summary>
-        /// <param name="typeid"></param>
+        /// <param name="typeid">获取格式转换类型ID(0:格式转换 1:色母相关格式转换)</param>
         /// <param name="dt">从EXCEL导入过来的DT</param>
         private void GenerateRecord(int typeid,DataTable dt)
         {
-            
+            _tempdt = generateDt.Generatetemp(dt);
+            _tempdtldt = generateDt.GeneratetempEnpty(typeid,dt,_tempdt);
+            //获取结果(若表头与表体都有值的话,就返回true)
+            _resultMark = _tempdt.Rows.Count > 0 && _tempdtldt.Rows.Count > 0;
         }
 
         /// <summary>
         /// 导出
         /// </summary>
         /// <param name="fileAddress"></param>
-        /// <param name="tempdt"></param>
-        /// <param name="tempdtldt"></param>
+        /// <param name="tempdt">表头临时表</param>
+        /// <param name="tempdtldt">表体临时表</param>
         private void ExportDtToExcel(string fileAddress, DataTable tempdt, DataTable tempdtldt)
         {
             
         }
-
     }
 }

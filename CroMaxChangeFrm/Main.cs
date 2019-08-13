@@ -163,7 +163,7 @@ namespace CroMaxChangeFrm
             var result = true;
             try
             {
-                task.TaskId = 2;
+                task.TaskId = 1;
                 task.Typeid = typeid;
                 task.Data = dt;
 
@@ -194,7 +194,7 @@ namespace CroMaxChangeFrm
                 if (saveFileDialog.ShowDialog() != DialogResult.OK) return;
                 var fileAdd = saveFileDialog.FileName;
 
-                task.TaskId = 3;
+                task.TaskId = 2;
                 task.FileAddress = fileAdd;
 
                 //使用子线程工作(作用:通过调用子线程进行控制Load窗体的关闭情况)
