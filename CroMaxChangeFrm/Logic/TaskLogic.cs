@@ -115,7 +115,7 @@ namespace CroMaxChangeFrm.Logic
         /// <param name="tempdtldt">表体临时表</param>
         private void ExportDtToExcel(string fileAddress, DataTable tempdt, DataTable tempdtldt)
         {
-            
+            _resultMark = exportDt.ExportDtToExcel(fileAddress,tempdt,tempdtldt);
         }
     }
 }

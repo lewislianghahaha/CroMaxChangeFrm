@@ -60,8 +60,8 @@ namespace CroMaxChangeFrm.Logic
                     var row = sheet.GetRow(r);
                     if (row == null) continue;
 
-                    //读取每列
-                    for (var j = 0; j < row.Cells.Count; j++)
+                    //读取每列(固定了共列值37)
+                    for (var j = 0; j < 37/*row.Cells.Count*/; j++)
                     {
                         if (j == 0)
                         {
@@ -87,8 +87,6 @@ namespace CroMaxChangeFrm.Logic
                                 result = true;
                             }
                         }
-                        //自增ID值
-                        id++;
                     }
 
                     if (result == true)
@@ -96,6 +94,8 @@ namespace CroMaxChangeFrm.Logic
                         //把每行增加到DataTable
                         dt.Rows.Add(dr);
                     }
+                    //自增ID值
+                    id++;
                 }
             }
             return dt;

@@ -116,7 +116,7 @@ namespace CroMaxChangeFrm
         {
             try
             {
-                if(_importdt.Rows.Count==0)throw new Exception("没有成功导入EXCEL文件,不能执行导出操作");
+                if(_tempdt.Rows.Count==0 || _tempdtldt.Rows.Count==0)throw new Exception("没有成功运算导入的EXCEL文件,不能执行导出操作");
                 Exportdt();
             }
             catch (Exception ex)

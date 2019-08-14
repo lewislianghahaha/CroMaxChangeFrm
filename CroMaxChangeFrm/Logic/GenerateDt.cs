@@ -65,7 +65,7 @@ namespace CroMaxChangeFrm.Logic
         /// <returns></returns>
         public DataTable GeneratetempEnpty(int typeid,DataTable dt,DataTable tempdt)
         {
-            var resultdt=new DataTable();
+            var resultdt = new DataTable();
 
             try
             {
@@ -76,17 +76,8 @@ namespace CroMaxChangeFrm.Logic
                 {
                     //根据表头的ID信息查询从EXCEL模板得出的DT内的相关内容
                     var rows = dt.Select("ID='" + Convert.ToInt32(row[0]) + "'");
-                    //将相关值赋给resultdt临时表对应的项内
-                    //if (rows.Length > 0)
-                    //{
-                        //循环执行获取11个色母量明细记录
-                        for (var i = 0; i < 12; i++)
-                        {
-                            var newrow = resultdt.NewRow();
-                            newrow = GenerColorantWeight(typeid, newrow, rows);
-                            resultdt.Rows.Add(newrow);
-                        }
-                    //}
+                    //执行插入相关信息至临时表
+                    resultdt.Merge(GenerColorantWeight(typeid, resultdt, rows));
                 }
             }
             catch (Exception)
@@ -101,25 +92,40 @@ namespace CroMaxChangeFrm.Logic
         /// 根据状态标记-整理色母量明细
         /// </summary>
         /// <param name="typeid">获取格式转换类型ID(0:格式转换 1:色母相关格式转换)</param>
-        /// <param name="newrows">新创建的行</param>
+        /// <param name="sourcedt">临时表</param>
         /// <param name="rows">从EXCEL获取的行数组</param>
         /// <returns></returns>
-        private DataRow GenerColorantWeight(int typeid,DataRow newrows,DataRow[] rows)
+        private DataTable GenerColorantWeight(int typeid,DataTable sourcedt,DataRow[] rows)
         {
             //累加量(克)
-            decimal sumweight=0;
-            //格式转换(只需计算累加量)
-            if (typeid == 0)
-            {
-                newrows[0] = rows[0][3];
-                newrows[1] = 
-            }
-            //色母相关格式转换(即需计算色母量及累加量)
-            else
-            {
+            decimal sumweight = 0;
 
+            //循环执行获取11个色母量明细记录
+            for (var i = 1; i < 12; i++)
+            {
+                //格式转换(只需计算累加量)
+                if (typeid == 0)
+                {
+                    //先根据循环ID获取对应的列色母名称
+                    var colorantname = Convert.ToString(rows[0][13 + i + i]);
+                    //判断若获取的色母为空,就不作添加
+                    if (colorantname == "") continue;
+                   // newrows[11] = i == 0 ? rows[12] : DBNull.Value;
+                    var newrows = sourcedt.NewRow();
+                    newrows[0] = rows[0][0];                                                  //ID
+                    newrows[1] = rows[0][13 + i + i];                                        //色母
+                    newrows[2] = "";                                                        //色母名称
+                    newrows[3] = rows[0][13 + i + i + 1];                                  //量(克)
+                    newrows[4] = sumweight += Convert.ToDecimal(rows[0][13 + i + i + 1]); //累计量(克)
+                    sourcedt.Rows.Add(newrows);
+                }
+                //色母相关格式转换(即需计算色母量及累加量)
+                else
+                {
+                    
+                }
             }
-            return newrows;
+            return sourcedt;
         }
     }
 }

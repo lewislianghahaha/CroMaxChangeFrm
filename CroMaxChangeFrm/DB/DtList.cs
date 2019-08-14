@@ -396,8 +396,8 @@ namespace CroMaxChangeFrm.DB
                 switch (i)
                 {
                     case 0:
-                        dc.ColumnName = "配方号";
-                        dc.DataType = Type.GetType("System.String");
+                        dc.ColumnName = "ID";
+                        dc.DataType = Type.GetType("System.Int32");
                         break;
                     case 1:
                         dc.ColumnName = "色母";
