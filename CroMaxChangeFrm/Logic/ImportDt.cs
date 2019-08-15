@@ -56,7 +56,7 @@ namespace CroMaxChangeFrm.Logic
                 {
                     var result = false;
                     var dr = dt.NewRow();
-                    //获取当前行(注:只能获取行中有值的项,为空的项不能获取)
+                    //获取当前行(注:只能获取行中有值的项,为空的项不能获取;即row.Cells.Count得出的总列数就只会汇总"有值的列"之和)
                     var row = sheet.GetRow(r);
                     if (row == null) continue;
 

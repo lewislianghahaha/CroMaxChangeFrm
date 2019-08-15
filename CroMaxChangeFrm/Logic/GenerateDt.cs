@@ -26,25 +26,25 @@ namespace CroMaxChangeFrm.Logic
                 {
                     var newrow = resultdt.NewRow();
                     newrow[0] = row[0];                                          //ID
-                    newrow[1] =row[1];                                          //车厂
-                    newrow[2] ="";                                              //颜色代码
-                    newrow[3] ="";                                              //颜色名称
-                    newrow[4] =row[2];                                          //适用车型
-                    newrow[5] = "伊施威";                                       //品牌
-                    newrow[6] =row[11];                                        //涂层
-                    newrow[7] ="";                                             //差异色
-                    newrow[8] =Convert.ToDateTime(row[10]).Year.ToString();    //年份(注:取‘制作日期’中的年份)
-                    newrow[9] ="原车板";                                       //色版来源
-                    newrow[10] =row[3];                                       //配方号
-                    newrow[11] ="";                                           //颜色索引号
-                    newrow[12] =row[10];                                     //制作日期
-                    newrow[13] ="陈富明";                                    //制作人
-                    newrow[14] =DateTime.Now.Date;                          //录入日期
-                    newrow[15] = "冯惠娴";                                  //录入人
-                    newrow[16] =row[9];                                    //审核日期
-                    newrow[17] = "谭晓红";                                 //审核人
-                    newrow[18] ="";                                       //备注
-                    newrow[19] ="";                                      //来源分类
+                    newrow[1] =row[1];                                           //车厂
+                    newrow[2] ="";                                               //颜色代码
+                    newrow[3] ="";                                               //颜色名称
+                    newrow[4] =row[2];                                           //适用车型
+                    newrow[5] = "伊施威";                                         //品牌
+                    newrow[6] =row[11];                                          //涂层
+                    newrow[7] ="";                                               //差异色
+                    newrow[8] =Convert.ToDateTime(row[10]).Year.ToString();      //年份(注:取‘制作日期’中的年份)
+                    newrow[9] ="原车板";                                         //色版来源
+                    newrow[10] =row[3];                                         //配方号
+                    newrow[11] ="";                                             //颜色索引号
+                    newrow[12] =row[10];                                        //制作日期
+                    newrow[13] ="陈富明";                                        //制作人
+                    newrow[14] =DateTime.Now.Date;                              //录入日期
+                    newrow[15] = "冯惠娴";                                       //录入人
+                    newrow[16] =row[9];                                          //审核日期
+                    newrow[17] = "谭晓红";                                       //审核人
+                    newrow[18] ="";                                              //备注
+                    newrow[19] ="";                                              //来源分类
                     resultdt.Rows.Add(newrow);
                 }
             }
@@ -110,7 +110,6 @@ namespace CroMaxChangeFrm.Logic
                     var colorantname = Convert.ToString(rows[0][13 + i + i]);
                     //判断若获取的色母为空,就不作添加
                     if (colorantname == "") continue;
-                   // newrows[11] = i == 0 ? rows[12] : DBNull.Value;
                     var newrows = sourcedt.NewRow();
                     newrows[0] = rows[0][0];                                                  //ID
                     newrows[1] = rows[0][13 + i + i];                                        //色母

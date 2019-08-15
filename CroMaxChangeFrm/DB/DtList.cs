@@ -56,11 +56,11 @@ namespace CroMaxChangeFrm.DB
                         break;
                     case 9:
                         dc.ColumnName = "配方版本";
-                        dc.DataType = Type.GetType("System.String");
+                        dc.DataType = Type.GetType("System.DateTime");
                         break;
                     case 10:
                         dc.ColumnName = "标准日期";
-                        dc.DataType = Type.GetType("System.String");
+                        dc.DataType = Type.GetType("System.DateTime");
                         break;
                     case 11:
                         dc.ColumnName = "涂层";
@@ -231,7 +231,7 @@ namespace CroMaxChangeFrm.DB
                         break;
                     case 11:
                         dc.ColumnName = "制作日期";
-                        dc.DataType = Type.GetType("System.DateTime"); 
+                        dc.DataType = Type.GetType("System.String"); 
                         break;
                     case 12:
                         dc.ColumnName = "制作人";
@@ -239,7 +239,7 @@ namespace CroMaxChangeFrm.DB
                         break;
                     case 13:
                         dc.ColumnName = "录入日期";
-                        dc.DataType = Type.GetType("System.DateTime");
+                        dc.DataType = Type.GetType("System.String");
                         break;
                     case 14:
                         dc.ColumnName = "录入人";
@@ -247,7 +247,7 @@ namespace CroMaxChangeFrm.DB
                         break;
                     case 15:
                         dc.ColumnName = "审核日期";
-                        dc.DataType = Type.GetType("System.DateTime");
+                        dc.DataType = Type.GetType("System.String");
                         break;
                     case 16:
                         dc.ColumnName = "审核人";
@@ -271,11 +271,11 @@ namespace CroMaxChangeFrm.DB
                         break;
                     case 21:
                         dc.ColumnName = "量(克)";
-                        dc.DataType = Type.GetType("System.Decimal"); 
+                        dc.DataType = Type.GetType("System.String"); 
                         break;
                     case 22:
                         dc.ColumnName = "累计量(克)";
-                        dc.DataType = Type.GetType("System.Decimal");
+                        dc.DataType = Type.GetType("System.String"); 
                         break;
                 }
                 dt.Columns.Add(dc);
@@ -409,11 +409,11 @@ namespace CroMaxChangeFrm.DB
                         break;
                     case 3:
                         dc.ColumnName = "量(克)";
-                        dc.DataType = Type.GetType("System.Decimal");
+                        dc.DataType = Type.GetType("System.Double");
                         break;
                     case 4:
                         dc.ColumnName = "累计量(克)";
-                        dc.DataType = Type.GetType("System.Decimal");
+                        dc.DataType = Type.GetType("System.Double");
                         break;
                 }
                 dt.Columns.Add(dc);

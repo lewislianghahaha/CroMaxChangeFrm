@@ -29,17 +29,16 @@ namespace CroMaxChangeFrm.Logic
                 var xssfWorkbook = new XSSFWorkbook();
                 //通过运算得出的表头及表体合并最终DT
                 var temp = Margedt(tempdt, tempdtldt);
-
-                //先执行MEASUREMENT_COLOR sheet页(注:1)先列表temp行数判断需拆分多少个sheet表进行填充; 以一个sheet表有9W行记录填充为基准)
-                sheetcount = temp.Rows.Count % 90000 == 0 ? temp.Rows.Count / 90000 : temp.Rows.Count / 90000 + 1;
+                //执行sheet页(注:1)先列表temp行数判断需拆分多少个sheet表进行填充; 以一个sheet表有9W行记录填充为基准)
+                sheetcount = temp.Rows.Count % 100000 == 0 ? temp.Rows.Count / 100000 : temp.Rows.Count / 100000 + 1;
                 //i为EXCEL的Sheet页数ID
                 for (var i = 1; i <= sheetcount; i++)
                 {
                     //创建sheet页
-                    var sheet = xssfWorkbook.CreateSheet("sheet" + i);
+                    var sheet = xssfWorkbook.CreateSheet("Sheet" + i);
                     //创建"标题行"
                     var row = sheet.CreateRow(0);
-                    //创建"MEASUREMENT_COLOR"sheet页各列标题
+                    //创建sheet页各列标题
                     for (var j = 0; j < temp.Columns.Count; j++)
                     {
                         //设置列宽度
@@ -122,9 +121,9 @@ namespace CroMaxChangeFrm.Logic
                     }
 
                     //计算进行循环的起始行
-                    var startrow = (i - 1) * 90000;
+                    var startrow = (i - 1) * 100000;
                     //计算进行循环的结束行
-                    var endrow = i == sheetcount ? temp.Rows.Count : i * 90000;
+                    var endrow = i == sheetcount ? temp.Rows.Count : i * 100000;
 
                     //每一个sheet表显示90000行  
                     for (var j = startrow; j < endrow; j++)
@@ -134,7 +133,21 @@ namespace CroMaxChangeFrm.Logic
                         //循环获取DT内的列值记录
                         for (var k = 0; k < temp.Columns.Count; k++)
                         {
-                            row.CreateCell(k).SetCellValue(Convert.ToString(temp.Rows[j][k]));
+                            //
+                            /*if (Convert.ToString(temp.Rows[j][0]) != "")
+                            {
+                                if(Convert.ToString(temp.Rows[j][k])=="") continue;
+                                row.CreateCell(k).SetCellValue(0);
+                            }
+                            else if (Convert.ToString(temp.Rows[j][0]) == "")
+                           // {*/
+                               // if (k != 19 && k != 20 && k != 21 && k != 22) continue;
+                               if(Convert.ToString(temp.Rows[j][k]) =="")continue;
+                                else
+                                {
+                                    row.CreateCell(k).SetCellValue(Convert.ToString(temp.Rows[j][k]));
+                                }
+                            //}
                         }
                         rownum++;
                     }
@@ -142,10 +155,12 @@ namespace CroMaxChangeFrm.Logic
                     rownum = 1;
                 }
 
-                ////写入数据
+                //写入数据
                 var file = new FileStream(fileAddress, FileMode.Create);
                 xssfWorkbook.Write(file);
-                file.Close();
+                file.Close();           //关闭文件流
+                xssfWorkbook.Close();   //关闭工作簿
+                file.Dispose();         //释放文件流
             }
             catch (Exception)
             {
@@ -173,25 +188,25 @@ namespace CroMaxChangeFrm.Logic
                 for (var i = 0; i < emptyrow.Length; i++)
                 {
                     var newrows = resultdt.NewRow();
-                    newrows[0] = i == 0 ? rows[1] : "";              //车厂
-                    newrows[1] = i == 0 ? rows[2] : "";              //颜色代码
-                    newrows[2] = i == 0 ? rows[3] : "";              //颜色名称
-                    newrows[3] = i == 0 ? rows[4] : "";              //适用车型
-                    newrows[4] = i == 0 ? rows[5] : "";              //品牌
-                    newrows[5] = i == 0 ? rows[6] : "";              //涂层
-                    newrows[6] = i == 0 ? rows[7] : "";              //差异色
-                    newrows[7] = i == 0 ? rows[8] : "";              //年份
-                    newrows[8] = i == 0 ? rows[9] : "";              //色版来源
-                    newrows[9] = i == 0 ? rows[10] : "";             //配方号
-                    newrows[10] = i == 0 ? rows[11] : "";            //颜色索引号
-                    newrows[11] = i == 0 ? rows[12] : DBNull.Value;  //制作日期
-                    newrows[12] = i == 0 ? rows[13] : "";            //制作人
-                    newrows[13] = i == 0 ? rows[14] : DBNull.Value;  //录入日期
-                    newrows[14] = i == 0 ? rows[15] : "";            //录入人
-                    newrows[15] = i == 0 ? rows[16] : DBNull.Value;  //审核日期
-                    newrows[16] = i == 0 ? rows[17] : "";            //审核人
-                    newrows[17] = i == 0 ? rows[18] : "";            //备注
-                    newrows[18] = i == 0 ? rows[19] : "";            //来源分类
+                    newrows[0] = i == 0 ? rows[1] : DBNull.Value;              //车厂
+                    newrows[1] = i == 0 ? rows[2] : DBNull.Value;              //颜色代码
+                    newrows[2] = i == 0 ? rows[3] : DBNull.Value;              //颜色名称
+                    newrows[3] = i == 0 ? rows[4] : DBNull.Value;              //适用车型
+                    newrows[4] = i == 0 ? rows[5] : DBNull.Value;              //品牌
+                    newrows[5] = i == 0 ? rows[6] : DBNull.Value;              //涂层
+                    newrows[6] = i == 0 ? rows[7] : DBNull.Value;              //差异色
+                    newrows[7] = i == 0 ? rows[8] : DBNull.Value;              //年份
+                    newrows[8] = i == 0 ? rows[9] : DBNull.Value;              //色版来源
+                    newrows[9] = i == 0 ? rows[10] : DBNull.Value;             //配方号
+                    newrows[10] = i == 0 ? rows[11] : DBNull.Value;            //颜色索引号
+                    newrows[11] = i == 0 ? rows[12] : DBNull.Value;            //制作日期
+                    newrows[12] = i == 0 ? rows[13] : DBNull.Value;            //制作人
+                    newrows[13] = i == 0 ? rows[14] : DBNull.Value;            //录入日期
+                    newrows[14] = i == 0 ? rows[15] : DBNull.Value;            //录入人
+                    newrows[15] = i == 0 ? rows[16] : DBNull.Value;            //审核日期
+                    newrows[16] = i == 0 ? rows[17] : DBNull.Value;            //审核人
+                    newrows[17] = i == 0 ? rows[18] : DBNull.Value;            //备注
+                    newrows[18] = i == 0 ? rows[19] : DBNull.Value;            //来源分类
                     newrows[19] = emptyrow[i][1];                    //色母
                     newrows[20] = emptyrow[i][2];                    //色母名称
                     newrows[21] = emptyrow[i][3];                    //量(克)
