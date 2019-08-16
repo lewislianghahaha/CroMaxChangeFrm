@@ -271,11 +271,11 @@ namespace CroMaxChangeFrm.DB
                         break;
                     case 21:
                         dc.ColumnName = "量(克)";
-                        dc.DataType = Type.GetType("System.String"); 
+                        dc.DataType = Type.GetType("System.Double");  
                         break;
                     case 22:
                         dc.ColumnName = "累计量(克)";
-                        dc.DataType = Type.GetType("System.String"); 
+                        dc.DataType = Type.GetType("System.Double"); 
                         break;
                 }
                 dt.Columns.Add(dc);

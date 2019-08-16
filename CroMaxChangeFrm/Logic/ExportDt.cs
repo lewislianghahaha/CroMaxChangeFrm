@@ -2,6 +2,7 @@
 using System.Data;
 using System.IO;
 using CroMaxChangeFrm.DB;
+using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 
 namespace CroMaxChangeFrm.Logic
@@ -133,21 +134,20 @@ namespace CroMaxChangeFrm.Logic
                         //循环获取DT内的列值记录
                         for (var k = 0; k < temp.Columns.Count; k++)
                         {
-                            //
-                            /*if (Convert.ToString(temp.Rows[j][0]) != "")
+                            if(Convert.ToString(temp.Rows[j][k]) == "") continue;
+                            else
                             {
-                                if(Convert.ToString(temp.Rows[j][k])=="") continue;
-                                row.CreateCell(k).SetCellValue(0);
-                            }
-                            else if (Convert.ToString(temp.Rows[j][0]) == "")
-                           // {*/
-                               // if (k != 19 && k != 20 && k != 21 && k != 22) continue;
-                               if(Convert.ToString(temp.Rows[j][k]) =="")continue;
+                                //当ColNum=21 或 22时,执行(注:要注意值小数位数保留两位;当超出三位小数的时候,会出现OutofMemory异常.)
+                                if (k == 21 || k == 22)
+                                {
+                                    row.CreateCell(k, CellType.Numeric).SetCellValue(Convert.ToDouble(temp.Rows[j][k]));
+                                }
+                                //除‘色母量’以及‘累积量’外的值的转换赋值
                                 else
                                 {
-                                    row.CreateCell(k).SetCellValue(Convert.ToString(temp.Rows[j][k]));
+                                    row.CreateCell(k, CellType.String).SetCellValue(Convert.ToString(temp.Rows[j][k]));
                                 }
-                            //}
+                            }
                         }
                         rownum++;
                     }
@@ -207,10 +207,10 @@ namespace CroMaxChangeFrm.Logic
                     newrows[16] = i == 0 ? rows[17] : DBNull.Value;            //审核人
                     newrows[17] = i == 0 ? rows[18] : DBNull.Value;            //备注
                     newrows[18] = i == 0 ? rows[19] : DBNull.Value;            //来源分类
-                    newrows[19] = emptyrow[i][1];                    //色母
-                    newrows[20] = emptyrow[i][2];                    //色母名称
-                    newrows[21] = emptyrow[i][3];                    //量(克)
-                    newrows[22] = emptyrow[i][4];                    //累计量(克)
+                    newrows[19] = emptyrow[i][1];                              //色母
+                    newrows[20] = emptyrow[i][2];                              //色母名称
+                    newrows[21] = Math.Round(Convert.ToDouble(emptyrow[i][3]),2);  //量(克)
+                    newrows[22] = Math.Round(Convert.ToDouble(emptyrow[i][4]),2);  //累计量(克)
                     resultdt.Rows.Add(newrows);
                 }
             }
