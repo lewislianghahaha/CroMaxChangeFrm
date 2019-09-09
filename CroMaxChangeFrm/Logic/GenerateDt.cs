@@ -45,6 +45,7 @@ namespace CroMaxChangeFrm.Logic
                     newrow[17] = "谭晓红";                                       //审核人
                     newrow[18] ="";                                              //备注
                     newrow[19] ="";                                              //来源分类
+                    newrow[20] = row[7];                                         //颜色组别(导出新数据库模板使用)
                     resultdt.Rows.Add(newrow);
                 }
             }

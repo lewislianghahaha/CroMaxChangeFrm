@@ -37,6 +37,7 @@
             this.btnopen = new System.Windows.Forms.Button();
             this.MainMenu = new System.Windows.Forms.MenuStrip();
             this.tmclose = new System.Windows.Forms.ToolStripMenuItem();
+            this.comselect = new System.Windows.Forms.ComboBox();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.MainMenu.SuspendLayout();
@@ -45,12 +46,13 @@
             // panel1
             // 
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panel1.Controls.Add(this.comselect);
             this.panel1.Controls.Add(this.rbColorantForChange);
             this.panel1.Controls.Add(this.rbFormualChange);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 25);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(243, 53);
+            this.panel1.Size = new System.Drawing.Size(243, 84);
             this.panel1.TabIndex = 1;
             // 
             // rbColorantForChange
@@ -82,9 +84,9 @@
             this.panel2.Controls.Add(this.btngen);
             this.panel2.Controls.Add(this.btnopen);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(0, 78);
+            this.panel2.Location = new System.Drawing.Point(0, 109);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(243, 122);
+            this.panel2.Size = new System.Drawing.Size(243, 114);
             this.panel2.TabIndex = 2;
             // 
             // btnexport
@@ -131,12 +133,20 @@
             this.tmclose.Size = new System.Drawing.Size(44, 21);
             this.tmclose.Text = "关闭";
             // 
+            // comselect
+            // 
+            this.comselect.FormattingEnabled = true;
+            this.comselect.Location = new System.Drawing.Point(27, 54);
+            this.comselect.Name = "comselect";
+            this.comselect.Size = new System.Drawing.Size(191, 20);
+            this.comselect.TabIndex = 2;
+            // 
             // Main
             // 
             this.AcceptButton = this.btnopen;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(243, 200);
+            this.ClientSize = new System.Drawing.Size(243, 223);
             this.ControlBox = false;
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
@@ -165,6 +175,7 @@
         private System.Windows.Forms.Button btnexport;
         private System.Windows.Forms.Button btngen;
         private System.Windows.Forms.ToolStripMenuItem tmclose;
+        private System.Windows.Forms.ComboBox comselect;
     }
 }
 

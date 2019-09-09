@@ -38,6 +38,7 @@ namespace CroMaxChangeFrm
         {
             rbFormualChange.Checked = false;
             rbColorantForChange.Checked = false;
+            OnShowTypeList();
         }
 
         /// <summary>
@@ -190,12 +191,17 @@ namespace CroMaxChangeFrm
         {
             try
             {
+                //获取下拉列表信息
+                var dvCustidlist = (DataRowView)comselect.Items[comselect.SelectedIndex];
+                var selectid = Convert.ToInt32(dvCustidlist["Id"]);
+
                 var saveFileDialog = new SaveFileDialog { Filter = "Xlsx文件|*.xlsx" };
                 if (saveFileDialog.ShowDialog() != DialogResult.OK) return;
                 var fileAdd = saveFileDialog.FileName;
 
                 task.TaskId = 2;
                 task.FileAddress = fileAdd;
+                task.Selectcomid = selectid;
 
                 //使用子线程工作(作用:通过调用子线程进行控制Load窗体的关闭情况)
                 new Thread(Start).Start();
@@ -213,6 +219,50 @@ namespace CroMaxChangeFrm
             {
                 MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void OnShowTypeList()
+        {
+            var dt = new DataTable();
+
+            //创建表头
+            for (var i = 0; i < 2; i++)
+            {
+                var dc = new DataColumn();
+                switch (i)
+                {
+                    case 0:
+                        dc.ColumnName = "Id";
+                        break;
+                    case 1:
+                        dc.ColumnName = "Name";
+                        break;
+                }
+                dt.Columns.Add(dc);
+            }
+
+            //创建行内容
+            for (var j = 0; j < 2; j++)
+            {
+                var dr = dt.NewRow();
+
+                switch (j)
+                {
+                    case 0:
+                        dr[0] = "1";
+                        dr[1] = "导出至旧数据库模板";
+                        break;
+                    case 1:
+                        dr[0] = "2";
+                        dr[1] = "导出至新数据库模板";
+                        break;
+                }
+                dt.Rows.Add(dr);
+            }
+
+            comselect.DataSource = dt;
+            comselect.DisplayMember = "Name"; //设置显示值
+            comselect.ValueMember = "Id";    //设置默认值内码
         }
 
     }

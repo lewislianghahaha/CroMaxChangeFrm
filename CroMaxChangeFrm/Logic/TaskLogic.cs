@@ -17,6 +17,8 @@ namespace CroMaxChangeFrm.Logic
         private DataTable _tempdt;         //保存运算成功的表头DT(导出时使用)
         private DataTable _tempdtldt;      //保存运算成功的表体DT(导出时使用)
 
+        private int _seletcomid;           //获取下拉框所选的值ID(导出时使用)
+
         private DataTable _resultTable;   //返回DT
         private bool _resultMark;        //返回是否成功标记
 
@@ -40,6 +42,11 @@ namespace CroMaxChangeFrm.Logic
             /// 获取格式转换类型ID(0:格式转换 1:色母相关格式转换)
             /// </summary>
             public int Typeid { set { _typeid = value; } }
+
+            /// <summary>
+            /// 获取下拉框所选的值ID(导出时使用)
+            /// </summary>
+            public int Selectcomid { set { _seletcomid = value; } }
         #endregion
 
         #region Get
