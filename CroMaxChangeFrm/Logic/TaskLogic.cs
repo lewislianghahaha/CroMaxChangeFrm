@@ -87,7 +87,7 @@ namespace CroMaxChangeFrm.Logic
                     break;
                 //导出
                 case 2:
-                    ExportDtToExcel(_fileAddress,_tempdt,_tempdtldt);
+                    ExportDtToExcel(_fileAddress,_tempdt,_tempdtldt,_seletcomid);
                     break;
             }
         }
@@ -120,9 +120,10 @@ namespace CroMaxChangeFrm.Logic
         /// <param name="fileAddress"></param>
         /// <param name="tempdt">表头临时表</param>
         /// <param name="tempdtldt">表体临时表</param>
-        private void ExportDtToExcel(string fileAddress, DataTable tempdt, DataTable tempdtldt)
+        /// <param name="selectid">获取下拉框所选的值ID(导出时使用)</param>
+        private void ExportDtToExcel(string fileAddress, DataTable tempdt, DataTable tempdtldt,int selectid)
         {
-            _resultMark = exportDt.ExportDtToExcel(fileAddress,tempdt,tempdtldt);
+            _resultMark = exportDt.ExportDtToExcel(fileAddress,tempdt,tempdtldt,selectid);
         }
     }
 }

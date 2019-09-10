@@ -160,7 +160,7 @@ namespace CroMaxChangeFrm.Logic
                                     row.CreateCell(j).SetCellValue("标准色号");
                                     break;
                                 case 8:
-                                    row.CreateCell(j).SetCellValue("RGBVALUE");
+                                    row.CreateCell(j).SetCellValue("RGBValue");
                                     break;
                                 case 9:
                                     row.CreateCell(j).SetCellValue("版本日期");
@@ -172,18 +172,15 @@ namespace CroMaxChangeFrm.Logic
                                     row.CreateCell(j).SetCellValue("色母编码");
                                     break;
                                 case 12:
-                                    row.CreateCell(j).SetCellValue("车型");
-                                    break;
-                                case 13:
                                     row.CreateCell(j).SetCellValue("色母名称");
                                     break;
-                                case 14:
+                                case 13:
                                     row.CreateCell(j).SetCellValue("色母量");
                                     break;
-                                case 15:
+                                case 14:
                                     row.CreateCell(j).SetCellValue("累积量(可不填)");
                                     break;
-                                case 16:
+                                case 15:
                                     row.CreateCell(j).SetCellValue("制作人");
                                     break;
                                     #endregion

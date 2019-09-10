@@ -179,7 +179,7 @@ namespace CroMaxChangeFrm.DB
         public DataTable Get_Exportdt()
         {
             var dt = new DataTable();
-            for (var i = 0; i < 23; i++)
+            for (var i = 0; i < 24; i++)
             {
                 var dc = new DataColumn();
 
@@ -294,7 +294,7 @@ namespace CroMaxChangeFrm.DB
         public DataTable Get_ExportNewdt()
         {
             var dt = new DataTable();
-            for (var i = 0; i < 18; i++)
+            for (var i = 0; i < 16; i++)
             {
                 var dc = new DataColumn();
 
@@ -364,14 +364,6 @@ namespace CroMaxChangeFrm.DB
                         dc.ColumnName = "制作人";
                         dc.DataType = Type.GetType("System.String");
                         break;
-                    case 16:
-                        dc.ColumnName = "旧系统配方号";
-                        dc.DataType = Type.GetType("System.String");
-                        break;
-                    case 17:
-                        dc.ColumnName = "色板来源";
-                        dc.DataType = Type.GetType("System.String");
-                        break;
                 }
                 dt.Columns.Add(dc);
             }
@@ -385,7 +377,7 @@ namespace CroMaxChangeFrm.DB
         public DataTable Get_gendt()
         {
             var dt = new DataTable();
-            for (var i = 0; i < 20; i++)
+            for (var i = 0; i < 21; i++)
             {
                 var dc = new DataColumn();
 
