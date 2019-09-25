@@ -34,7 +34,7 @@ namespace CroMaxChangeFrm.Logic
                 var xssfWorkbook = new XSSFWorkbook();
                 //通过运算得出的表头及表体合并最终DT
                 //1:旧系统使用 //2:新系统使用
-                temp = comselectid == 1 ? Margedt(tempdt, tempdtldt) : UseDtChangeNewdt(Margedt(tempdt, tempdtldt));
+                temp = comselectid == 1 ? Margedt(tempdt, tempdtldt) : UseDtChangeNewdt(tempdt, tempdtldt);
 
                 //执行sheet页(注:1)先列表temp行数判断需拆分多少个sheet表进行填充; 以一个sheet表有9W行记录填充为基准)
                 sheetcount = temp.Rows.Count % 100000 == 0 ? temp.Rows.Count / 100000 : temp.Rows.Count / 100000 + 1;
@@ -206,7 +206,7 @@ namespace CroMaxChangeFrm.Logic
                             else
                             {
                                 //当ColNum=21 或 22时,执行(注:要注意值小数位数保留两位;当超出三位小数的时候,会出现OutofMemory异常.)
-                                //注:当需要转出模板为旧系统时 使用 列ID为21 22;当为新系统时 使用 列ID为13 14
+                                //注:当需要转出模板为旧系统时 使用 列ID为21 22;当为新系统时 使用 列ID为12 13
                                 if (comselectid == 1)
                                 {
                                     if (k == 21 || k == 22)
@@ -216,7 +216,7 @@ namespace CroMaxChangeFrm.Logic
                                 }
                                 else
                                 {
-                                    if (k == 13 || k == 14)
+                                    if (k == 12 || k == 13)
                                     {
                                         row.CreateCell(k, CellType.Numeric).SetCellValue(Convert.ToDouble(temp.Rows[j][k]));
                                     }
@@ -297,34 +297,63 @@ namespace CroMaxChangeFrm.Logic
         /// <summary>
         /// 将旧数据库模板DT 转换至 新数据库模板DT
         /// </summary>
-        /// <param name="sourcedt"></param>
         /// <returns></returns>
-        private DataTable UseDtChangeNewdt(DataTable sourcedt)
+        private DataTable UseDtChangeNewdt(DataTable tempdt, DataTable tempemptydt)
         {
             //获取导出EXCEL临时表
             var resultdt = dtList.Get_ExportNewdt();
-            //循环使用sourcedt读取记录;目的:将旧数据库模板DT 转换 至 新数据库模板DT
-            foreach (DataRow rows in sourcedt.Rows)
+            foreach (DataRow rows in tempdt.Rows)
             {
-                var newrows = resultdt.NewRow();
-                newrows[0] = rows[0];       //制造商
-                newrows[1] = rows[3];       //车型
-                newrows[2] = rows[5];       //涂层
-                newrows[3] = rows[2];       //颜色描述
-                newrows[4] = "";            //内部色号
-                newrows[5] = "";            //主配方色号(差异色)
-                newrows[6] = rows[23];      //颜色组别
-                newrows[7] = rows[1];       //标准色号
-                newrows[8] = "";            //RBGValue
-                newrows[9] = rows[15];      //版本日期
-                newrows[10] = "";           //层
-                newrows[11] = rows[20];     //色母编码
-                newrows[12] = "";           //色母名称
-                newrows[13] = rows[21];     //色母量(克)
-                newrows[14] = rows[22];     //累积量
-                newrows[15] = rows[12];     //制作人
-                resultdt.Rows.Add(newrows);
+                //根据ID值获取表头对应的表体信息
+                var emptyrow = tempemptydt.Select("ID='" + Convert.ToInt32(rows[0]) + "'");
+                //循环表体信息(注:若i=0即表示插入第一行记录,也就可以将表头信息插入至临时表对应的列;而除i=0外,其余的表头信息对应的列都为空)
+                for (var i = 0; i < emptyrow.Length; i++)
+                {
+                    var newrows = resultdt.NewRow();
+                    newrows[0] = i == 0 ? rows[1] : DBNull.Value;   //制造商
+                    newrows[1] = i == 0 ? rows[2] : DBNull.Value;   //车型
+                    newrows[2] = i == 0 ? rows[3] : DBNull.Value;   //涂层
+                    newrows[3] = i == 0 ? rows[4] : DBNull.Value;   //颜色描述
+                    newrows[4] = i == 0 ? rows[5] : DBNull.Value;   //内部色号
+                    newrows[5] = i == 0 ? rows[6] : DBNull.Value;   //主配方色号(差异色)
+                    newrows[6] = i == 0 ? rows[7] : DBNull.Value;   //颜色组别
+                    newrows[7] = i == 0 ? rows[8] : DBNull.Value;   //标准色号
+                    newrows[8] = i == 0 ? rows[9] : DBNull.Value;   //RBGValue
+                    newrows[9] = i == 0 ? rows[10] : DBNull.Value;   //版本日期
+                    newrows[10] = i == 0 ? rows[11] : DBNull.Value;   //层
+
+                    newrows[11] = emptyrow[i][1];   //色母编码
+                    newrows[12] = DBNull.Value; //色母名称
+                    newrows[13] = Convert.ToDouble(emptyrow[i][2]);   //色母量(克)
+                    newrows[14] = DBNull.Value; //累积量
+                    newrows[15] = DBNull.Value; //制作人
+                    resultdt.Rows.Add(newrows);
+                }
             }
+            #region Hide
+            //循环使用sourcedt读取记录;目的:将旧数据库模板DT 转换 至 新数据库模板DT
+            //foreach (DataRow rows in sourcedt.Rows)
+            //{
+            //    var newrows = resultdt.NewRow();
+            //    newrows[0] = rows[0];       //制造商
+            //    newrows[1] = rows[3];       //车型
+            //    newrows[2] = rows[5];       //涂层
+            //    newrows[3] = rows[2];       //颜色描述
+            //    newrows[4] = "";            //内部色号
+            //    newrows[5] = "";            //主配方色号(差异色)
+            //    newrows[6] = rows[23];      //颜色组别
+            //    newrows[7] = rows[1];       //标准色号
+            //    newrows[8] = "";            //RBGValue
+            //    newrows[9] = rows[15];      //版本日期
+            //    newrows[10] = "";           //层
+            //    newrows[11] = rows[20];     //色母编码
+            //    newrows[12] = "";           //色母名称
+            //    newrows[13] = rows[21];     //色母量(克)
+            //    newrows[14] = rows[22];     //累积量
+            //    newrows[15] = rows[12];     //制作人
+            //    resultdt.Rows.Add(newrows);
+            //}
+            #endregion
             return resultdt;
         }
 

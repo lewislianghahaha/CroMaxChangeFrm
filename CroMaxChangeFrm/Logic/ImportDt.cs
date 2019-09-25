@@ -32,7 +32,7 @@ namespace CroMaxChangeFrm.Logic
                 dt.Rows.Clear();
                 dt.Columns.Clear();
             }
-            return dt;
+             return dt;
         }
 
         private DataTable OpenExcelToDataTable(string fileAddress)
@@ -60,8 +60,9 @@ namespace CroMaxChangeFrm.Logic
                     var row = sheet.GetRow(r);
                     if (row == null) continue;
 
-                    //读取每列(固定了共列值37)
-                    for (var j = 0; j < 37/*row.Cells.Count*/; j++)
+                    //读取每列(固定了共列值37)  (固定列为33列=>新导入模板使用 add date:20190925)
+
+                    for (var j = 0; j < 34/*37*//*row.Cells.Count*/; j++)
                     {
                         if (j == 0)
                         {

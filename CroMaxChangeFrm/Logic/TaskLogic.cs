@@ -83,7 +83,7 @@ namespace CroMaxChangeFrm.Logic
                     break;
                 //运算
                 case 1:
-                    GenerateRecord(_typeid,_dt);
+                    GenerateRecord(_typeid,_seletcomid,_dt);
                     break;
                 //导出
                 case 2:
@@ -105,11 +105,12 @@ namespace CroMaxChangeFrm.Logic
         /// 运算
         /// </summary>
         /// <param name="typeid">获取格式转换类型ID(0:格式转换 1:色母相关格式转换)</param>
+        /// <param name="selectid">获取下拉框所选的值ID 1:导出至旧数据库 2:导出至新数据库</param>
         /// <param name="dt">从EXCEL导入过来的DT</param>
-        private void GenerateRecord(int typeid,DataTable dt)
+        private void GenerateRecord(int typeid,int selectid,DataTable dt)
         {
-            _tempdt = generateDt.Generatetemp(dt);
-            _tempdtldt = generateDt.GeneratetempEnpty(typeid,dt,_tempdt);
+            _tempdt = generateDt.Generatetemp(dt,selectid);
+            _tempdtldt = generateDt.GeneratetempEnpty(typeid,dt,_tempdt,selectid);
             //获取结果(若表头与表体都有值的话,就返回true)
             _resultMark = _tempdt.Rows.Count > 0 && _tempdtldt.Rows.Count > 0;
         }

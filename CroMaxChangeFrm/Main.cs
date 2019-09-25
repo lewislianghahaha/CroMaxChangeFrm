@@ -164,9 +164,14 @@ namespace CroMaxChangeFrm
             var result = true;
             try
             {
+                //获取下拉列表信息
+                var dvCustidlist = (DataRowView)comselect.Items[comselect.SelectedIndex];
+                var selectid = Convert.ToInt32(dvCustidlist["Id"]);
+
                 task.TaskId = 1;
                 task.Typeid = typeid;
                 task.Data = dt;
+                task.Selectcomid = selectid;
 
                 //使用子线程工作(作用:通过调用子线程进行控制Load窗体的关闭情况)
                 new Thread(Start).Start();
