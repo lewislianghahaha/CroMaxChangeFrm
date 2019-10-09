@@ -60,9 +60,9 @@ namespace CroMaxChangeFrm.Logic
                     var row = sheet.GetRow(r);
                     if (row == null) continue;
 
-                    //读取每列(固定了共列值37)  (固定列为33列=>新导入模板使用 add date:20190925)
+                    //读取每列(固定了共列值37)  (固定列为34列=>新导入模板使用 add date:20191009)
 
-                    for (var j = 0; j < 34/*37*//*row.Cells.Count*/; j++)
+                    for (var j = 0; j < 35/*37*//*row.Cells.Count*/; j++)
                     {
                         if (j == 0)
                         {

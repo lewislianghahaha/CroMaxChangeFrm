@@ -36,7 +36,7 @@ namespace CroMaxChangeFrm.Logic
                 //1:旧系统使用 //2:新系统使用
                 temp = comselectid == 1 ? Margedt(tempdt, tempdtldt) : UseDtChangeNewdt(tempdt, tempdtldt);
 
-                //执行sheet页(注:1)先列表temp行数判断需拆分多少个sheet表进行填充; 以一个sheet表有9W行记录填充为基准)
+                //执行sheet页(注:1)先列表temp行数判断需拆分多少个sheet表进行填充; 以一个sheet表有10W行记录填充为基准)
                 sheetcount = temp.Rows.Count % 100000 == 0 ? temp.Rows.Count / 100000 : temp.Rows.Count / 100000 + 1;
                 //i为EXCEL的Sheet页数ID
                 for (var i = 1; i <= sheetcount; i++)
@@ -154,33 +154,36 @@ namespace CroMaxChangeFrm.Logic
                                     row.CreateCell(j).SetCellValue("主配方色号(差异色)");
                                     break;
                                 case 6:
-                                    row.CreateCell(j).SetCellValue("颜色组别");
+                                    row.CreateCell(j).SetCellValue("差异色名称");
                                     break;
                                 case 7:
-                                    row.CreateCell(j).SetCellValue("标准色号");
+                                    row.CreateCell(j).SetCellValue("颜色组别");
                                     break;
                                 case 8:
-                                    row.CreateCell(j).SetCellValue("RGBValue");
+                                    row.CreateCell(j).SetCellValue("标准色号");
                                     break;
                                 case 9:
-                                    row.CreateCell(j).SetCellValue("版本日期");
+                                    row.CreateCell(j).SetCellValue("RGBValue");
                                     break;
                                 case 10:
-                                    row.CreateCell(j).SetCellValue("层");
+                                    row.CreateCell(j).SetCellValue("版本日期");
                                     break;
                                 case 11:
-                                    row.CreateCell(j).SetCellValue("色母编码");
+                                    row.CreateCell(j).SetCellValue("层");
                                     break;
                                 case 12:
-                                    row.CreateCell(j).SetCellValue("色母名称");
+                                    row.CreateCell(j).SetCellValue("色母编码");
                                     break;
                                 case 13:
-                                    row.CreateCell(j).SetCellValue("色母量");
+                                    row.CreateCell(j).SetCellValue("色母名称");
                                     break;
                                 case 14:
-                                    row.CreateCell(j).SetCellValue("累积量(可不填)");
+                                    row.CreateCell(j).SetCellValue("色母量");
                                     break;
                                 case 15:
+                                    row.CreateCell(j).SetCellValue("累积量(可不填)");
+                                    break;
+                                case 16:
                                     row.CreateCell(j).SetCellValue("制作人");
                                     break;
                                     #endregion
@@ -206,7 +209,7 @@ namespace CroMaxChangeFrm.Logic
                             else
                             {
                                 //当ColNum=21 或 22时,执行(注:要注意值小数位数保留两位;当超出三位小数的时候,会出现OutofMemory异常.)
-                                //注:当需要转出模板为旧系统时 使用 列ID为21 22;当为新系统时 使用 列ID为12 13
+                                //注:当需要转出模板为旧系统时 使用 列ID为21 22;当为新系统时 使用 列ID为14 15
                                 if (comselectid == 1)
                                 {
                                     if (k == 21 || k == 22)
@@ -216,7 +219,7 @@ namespace CroMaxChangeFrm.Logic
                                 }
                                 else
                                 {
-                                    if (k == 12 || k == 13)
+                                    if (k == 14 || k == 15)
                                     {
                                         row.CreateCell(k, CellType.Numeric).SetCellValue(Convert.ToDouble(temp.Rows[j][k]));
                                     }
@@ -246,7 +249,7 @@ namespace CroMaxChangeFrm.Logic
         }
 
         /// <summary>
-        /// 合并表格-将运算过来的临时表头及表体进行合并(作导出数据之用)
+        /// 合并表格-将运算过来的临时表头及表体进行合并(作导出数据之用) 注:旧系统使用
         /// </summary>
         /// <param name="tempdt">运算结果-表头</param>
         /// <param name="tempemptydt">运算结果-表体</param>
@@ -295,7 +298,7 @@ namespace CroMaxChangeFrm.Logic
         }
 
         /// <summary>
-        /// 将旧数据库模板DT 转换至 新数据库模板DT
+        /// 将旧数据库模板DT 转换至 新数据库模板DT 注:新系统使用
         /// </summary>
         /// <returns></returns>
         private DataTable UseDtChangeNewdt(DataTable tempdt, DataTable tempemptydt)
@@ -316,17 +319,18 @@ namespace CroMaxChangeFrm.Logic
                     newrows[3] = i == 0 ? rows[4] : DBNull.Value;   //颜色描述
                     newrows[4] = i == 0 ? rows[5] : DBNull.Value;   //内部色号
                     newrows[5] = i == 0 ? rows[6] : DBNull.Value;   //主配方色号(差异色)
-                    newrows[6] = i == 0 ? rows[7] : DBNull.Value;   //颜色组别
-                    newrows[7] = i == 0 ? rows[8] : DBNull.Value;   //标准色号
-                    newrows[8] = i == 0 ? rows[9] : DBNull.Value;   //RBGValue
-                    newrows[9] = i == 0 ? rows[10] : DBNull.Value;   //版本日期
-                    newrows[10] = i == 0 ? rows[11] : DBNull.Value;   //层
+                    newrows[6] = i == 0 ? rows[7] : DBNull.Value;   //差异色名称
+                    newrows[7] = i == 0 ? rows[8] : DBNull.Value;   //颜色组别
+                    newrows[8] = i == 0 ? rows[9] : DBNull.Value;   //标准色号
+                    newrows[9] = i == 0 ? rows[10] : DBNull.Value;   //RBGValue
+                    newrows[10] = i == 0 ? rows[11] : DBNull.Value;   //版本日期
+                    newrows[11] = i == 0 ? rows[12] : DBNull.Value;   //层
 
-                    newrows[11] = emptyrow[i][1];   //色母编码
-                    newrows[12] = DBNull.Value; //色母名称
-                    newrows[13] = Convert.ToDouble(emptyrow[i][2]);   //色母量(克)
-                    newrows[14] = DBNull.Value; //累积量
-                    newrows[15] = DBNull.Value; //制作人
+                    newrows[12] = emptyrow[i][1];   //色母编码
+                    newrows[13] = DBNull.Value; //色母名称
+                    newrows[14] = Convert.ToDouble(emptyrow[i][2]);   //色母量(克)
+                    newrows[15] = DBNull.Value; //累积量
+                    newrows[16] = DBNull.Value; //制作人
                     resultdt.Rows.Add(newrows);
                 }
             }

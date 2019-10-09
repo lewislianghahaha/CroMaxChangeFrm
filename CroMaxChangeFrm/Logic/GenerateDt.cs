@@ -72,11 +72,12 @@ namespace CroMaxChangeFrm.Logic
                         newrow[4] = rows[4];//颜色描述
                         newrow[5] = rows[5];//内部色号
                         newrow[6] = rows[6];//主配方色号（差异色)
-                        newrow[7] = rows[7];//颜色组别
-                        newrow[8] = rows[8];//标准色号
-                        newrow[9] = rows[9];//RGBValue
-                        newrow[10] = rows[10];//版本日期
-                        newrow[11] = rows[11];//层
+                        newrow[7] = rows[7];//差异色名称
+                        newrow[8] = rows[8];//颜色组别
+                        newrow[9] = rows[9];//标准色号
+                        newrow[10] = rows[10];//RGBValue
+                        newrow[11] = rows[11];//版本日期
+                        newrow[12] = rows[12];//层
                         resultdt.Rows.Add(newrow);
                     }
                 }
@@ -184,14 +185,14 @@ namespace CroMaxChangeFrm.Logic
                 //循环执行获取11个色母量明细记录
                 for (var i = 1; i < 12; i++)
                 {
-                    //先根据循环ID获取对应的列色母名称
-                    var colorantname = Convert.ToString(rows[0][10 + i + i]);
-                    //判断若获取的色母为空,就不作添加
+                    //先根据循环ID获取对应的列色母编码
+                    var colorantname = Convert.ToString(rows[0][11 + i + i]);
+                    //判断若获取的色母编码为空,就不作添加
                     if (colorantname == "") continue;
                     var newrows = sourcedt.NewRow();
                     newrows[0] = rows[0][0];                //ID
-                    newrows[1] = rows[0][10 + i + i];       //色母编码
-                    newrows[2] = rows[0][10 + i + i + 1];   //量(克)
+                    newrows[1] = colorantname;              //色母编码
+                    newrows[2] = rows[0][11 + i + i + 1];   //量(克)
                     sourcedt.Rows.Add(newrows);
                 }
             }
