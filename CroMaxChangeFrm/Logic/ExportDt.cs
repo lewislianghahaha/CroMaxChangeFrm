@@ -36,8 +36,8 @@ namespace CroMaxChangeFrm.Logic
                 //1:旧系统使用 //2:新系统使用
                 temp = comselectid == 1 ? Margedt(tempdt, tempdtldt) : UseDtChangeNewdt(tempdt, tempdtldt);
 
-                //执行sheet页(注:1)先列表temp行数判断需拆分多少个sheet表进行填充; 以一个sheet表有10W行记录填充为基准)
-                sheetcount = temp.Rows.Count % 100000 == 0 ? temp.Rows.Count / 100000 : temp.Rows.Count / 100000 + 1;
+                //执行sheet页(注:1)先列表temp行数判断需拆分多少个sheet表进行填充; 以一个sheet表有100W行记录填充为基准)
+                sheetcount = temp.Rows.Count % 1000000 == 0 ? temp.Rows.Count / 1000000 : temp.Rows.Count / 1000000 + 1;
                 //i为EXCEL的Sheet页数ID
                 for (var i = 1; i <= sheetcount; i++)
                 {
@@ -193,9 +193,9 @@ namespace CroMaxChangeFrm.Logic
                     }
 
                     //计算进行循环的起始行
-                    var startrow = (i - 1) * 100000;
+                    var startrow = (i - 1) * 1000000;
                     //计算进行循环的结束行
-                    var endrow = i == sheetcount ? temp.Rows.Count : i * 100000;
+                    var endrow = i == sheetcount ? temp.Rows.Count : i * 1000000;
 
                     //每一个sheet表显示90000行  
                     for (var j = startrow; j < endrow; j++)
@@ -323,7 +323,7 @@ namespace CroMaxChangeFrm.Logic
                     newrows[7] = i == 0 ? rows[8] : DBNull.Value;   //颜色组别
                     newrows[8] = i == 0 ? rows[9] : DBNull.Value;   //标准色号
                     newrows[9] = i == 0 ? rows[10] : DBNull.Value;   //RBGValue
-                    newrows[10] = i == 0 ? rows[11] : DBNull.Value;   //版本日期
+                    newrows[10] = i == 0 ? Convert.ToDateTime(rows[11]) : Convert.ToDateTime(DBNull.Value);   //版本日期
                     newrows[11] = i == 0 ? rows[12] : DBNull.Value;   //层
 
                     newrows[12] = emptyrow[i][1];   //色母编码
