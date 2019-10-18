@@ -50,7 +50,11 @@ namespace CroMaxChangeFrm
         {
             try
             {
-                if(rbColorantForChange.Checked==false && rbFormualChange.Checked==false) throw new Exception("请选择任意一种转换格式进行转换");
+                //获取下拉列表信息
+                var dvCustidlist = (DataRowView)comselect.Items[comselect.SelectedIndex];
+                var selectid = Convert.ToInt32(dvCustidlist["Id"]);
+
+                if (rbColorantForChange.Checked==false && rbFormualChange.Checked==false) throw new Exception("请选择任意一种转换格式进行转换");
 
                 var openFileDialog = new OpenFileDialog { Filter = "Xlsx文件|*.xlsx" };
                 if (openFileDialog.ShowDialog() != DialogResult.OK) return;
@@ -59,6 +63,7 @@ namespace CroMaxChangeFrm
                 //将所需的值赋到Task类内
                 task.TaskId = 0;
                 task.FileAddress = fileAdd;
+                task.Selectcomid = selectid;
 
                 //使用子线程工作(作用:通过调用子线程进行控制Load窗体的关闭情况)
                 new Thread(Start).Start();
@@ -247,7 +252,7 @@ namespace CroMaxChangeFrm
             }
 
             //创建行内容
-            for (var j = 0; j < 2; j++)
+            for (var j = 0; j < 3; j++)
             {
                 var dr = dt.NewRow();
 
@@ -259,7 +264,11 @@ namespace CroMaxChangeFrm
                         break;
                     case 1:
                         dr[0] = "2";
-                        dr[1] = "导出至新数据库模板";
+                        dr[1] = "导出至新数据库模板(纵向方式导出)";
+                        break;
+                    case 2:
+                        dr[0] = "3";
+                        dr[1] = "以横向方式导出至新数据库模板";
                         break;
                 }
                 dt.Rows.Add(dr);

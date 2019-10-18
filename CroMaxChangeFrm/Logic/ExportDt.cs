@@ -34,7 +34,14 @@ namespace CroMaxChangeFrm.Logic
                 var xssfWorkbook = new XSSFWorkbook();
                 //通过运算得出的表头及表体合并最终DT
                 //1:旧系统使用 //2:新系统使用
-                temp = comselectid == 1 ? Margedt(tempdt, tempdtldt) : UseDtChangeNewdt(tempdt, tempdtldt);
+                if (comselectid == 3)
+                {
+                    temp = tempdt;
+                }
+                else
+                {
+                    temp = comselectid == 1 ? Margedt(tempdt, tempdtldt) : UseDtChangeNewdt(tempdt, tempdtldt);
+                }
 
                 //执行sheet页(注:1)先列表temp行数判断需拆分多少个sheet表进行填充; 以一个sheet表有100W行记录填充为基准)
                 sheetcount = temp.Rows.Count % 1000000 == 0 ? temp.Rows.Count / 1000000 : temp.Rows.Count / 1000000 + 1;
@@ -129,8 +136,8 @@ namespace CroMaxChangeFrm.Logic
                                     #endregion
                             }
                         }
-                        //新系统使用
-                        else
+                        //新系统使用(纵向使用)
+                        else if(comselectid==2)
                         {
                             switch (j)
                             {
@@ -189,7 +196,115 @@ namespace CroMaxChangeFrm.Logic
                                     #endregion
                             }
                         }
+                        //新系统横向使用
+                        else if (comselectid == 3)
+                        {
+                            switch (j)
+                            {
+                                #region 新系统横向模板使用
+                                case 0:
+                                    row.CreateCell(j).SetCellValue("制造商");
+                                break;
+                                case 1:
+                                    row.CreateCell(j).SetCellValue("车型");
+                                    break;
+                                case 2:
+                                    row.CreateCell(j).SetCellValue("涂层");
+                                    break;
+                                case 3:
+                                    row.CreateCell(j).SetCellValue("颜色描述");
+                                    break;
+                                case 4:
+                                    row.CreateCell(j).SetCellValue("内部色号");
+                                    break;
+                                case 5:
+                                    row.CreateCell(j).SetCellValue("主配方色号（差异色)");
+                                    break;
+                                case 6:
+                                    row.CreateCell(j).SetCellValue("颜色组别");
+                                    break;
+                                case 7:
+                                    row.CreateCell(j).SetCellValue("标准色号");
+                                    break;
+                                case 8:
+                                    row.CreateCell(j).SetCellValue("RGBValue");
+                                    break;
+                                case 9:
+                                    row.CreateCell(j).SetCellValue("版本日期");
+                                    break;
+                                case 10:
+                                    row.CreateCell(j).SetCellValue("层");
+                                    break;
 
+                                case 11:
+                                    row.CreateCell(j).SetCellValue("色母1");
+                                    break;
+                                case 12:
+                                    row.CreateCell(j).SetCellValue("色母量1");
+                                    break;
+                                case 13:
+                                    row.CreateCell(j).SetCellValue("色母2");
+                                    break;
+                                case 14:
+                                    row.CreateCell(j).SetCellValue("色母量2");
+                                    break;
+                                case 15:
+                                    row.CreateCell(j).SetCellValue("色母3");
+                                    break;
+                                case 16:
+                                    row.CreateCell(j).SetCellValue("色母量3");
+                                    break;
+                                case 17:
+                                    row.CreateCell(j).SetCellValue("色母4");
+                                    break;
+                                case 18:
+                                    row.CreateCell(j).SetCellValue("色母量4");
+                                    break;
+                                case 19:
+                                    row.CreateCell(j).SetCellValue("色母5");
+                                    break;
+                                case 20:
+                                    row.CreateCell(j).SetCellValue("色母量5");
+                                    break;
+                                case 21:
+                                    row.CreateCell(j).SetCellValue("色母6");
+                                    break;
+                                case 22:
+                                    row.CreateCell(j).SetCellValue("色母量6");
+                                    break;
+                                case 23:
+                                    row.CreateCell(j).SetCellValue("色母7");
+                                    break;
+                                case 24:
+                                    row.CreateCell(j).SetCellValue("色母量7");
+                                    break;
+                                case 25:
+                                    row.CreateCell(j).SetCellValue("色母8");
+                                    break;
+                                case 26:
+                                    row.CreateCell(j).SetCellValue("色母量8");
+                                    break;
+                                case 27:
+                                    row.CreateCell(j).SetCellValue("色母9");
+                                    break;
+                                case 28:
+                                    row.CreateCell(j).SetCellValue("色母量9");
+                                    break;
+                                case 29:
+                                    row.CreateCell(j).SetCellValue("色母10");
+                                    break;
+                                case 30:
+                                    row.CreateCell(j).SetCellValue("色母量10");
+                                    break;
+                                case 31:
+                                    row.CreateCell(j).SetCellValue("色母11");
+                                    break;
+                                case 32:
+                                    row.CreateCell(j).SetCellValue("色母量11");
+                                    break;
+                                    #endregion
+                            }
+                        }
                     }
 
                     //计算进行循环的起始行
@@ -217,15 +332,19 @@ namespace CroMaxChangeFrm.Logic
                                         row.CreateCell(k, CellType.Numeric).SetCellValue(Convert.ToDouble(temp.Rows[j][k]));
                                     }
                                 }
-                                else
+                                else if(comselectid==2)
                                 {
                                     if (k == 14 || k == 15)
                                     {
                                         row.CreateCell(k, CellType.Numeric).SetCellValue(Convert.ToDouble(temp.Rows[j][k]));
                                     }
                                 }
-                                //除‘色母量’以及‘累积量’外的值的转换赋值
-                                row.CreateCell(k, CellType.String).SetCellValue(Convert.ToString(temp.Rows[j][k]));
+                                else
+                                {
+                                    //除‘色母量’以及‘累积量’外的值的转换赋值 或 横向导出时
+                                    row.CreateCell(k, CellType.String).SetCellValue(Convert.ToString(temp.Rows[j][k]));
+                                }
+                                
                             }
                         }
                         rownum++;

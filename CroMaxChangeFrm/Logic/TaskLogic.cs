@@ -79,7 +79,7 @@ namespace CroMaxChangeFrm.Logic
             {
                 //导入
                 case 0:
-                    OpenExcelImporttoDt(_fileAddress);
+                    OpenExcelImporttoDt(_fileAddress,_seletcomid);
                     break;
                 //运算
                 case 1:
@@ -96,23 +96,35 @@ namespace CroMaxChangeFrm.Logic
         /// 导入
         /// </summary>
         /// <param name="fileAddress"></param>
-        private void OpenExcelImporttoDt(string fileAddress)
+        /// <param name="selectid">获取下拉框所选的值ID 1:导出至旧数据库 2:导出至新数据库 3:以横向方式导出至新数据库模板</param>
+        private void OpenExcelImporttoDt(string fileAddress,int selectid)
         {
-            _resultTable = importDt.OpenExcelImporttoDt(fileAddress);
+            _resultTable = importDt.OpenExcelImporttoDt(fileAddress, selectid);
         }
 
         /// <summary>
         /// 运算
         /// </summary>
         /// <param name="typeid">获取格式转换类型ID(0:格式转换 1:色母相关格式转换)</param>
-        /// <param name="selectid">获取下拉框所选的值ID 1:导出至旧数据库 2:导出至新数据库</param>
+        /// <param name="selectid">获取下拉框所选的值ID 1:导出至旧数据库 2:导出至新数据库 3:以横向方式导出至新数据库模板</param>
         /// <param name="dt">从EXCEL导入过来的DT</param>
         private void GenerateRecord(int typeid,int selectid,DataTable dt)
         {
             _tempdt = generateDt.Generatetemp(dt,selectid);
-            _tempdtldt = generateDt.GeneratetempEnpty(typeid,dt,_tempdt,selectid);
+            if (selectid != 3)
+            {
+                _tempdtldt = generateDt.GeneratetempEnpty(typeid,dt,_tempdt,selectid);
+            }
+            
             //获取结果(若表头与表体都有值的话,就返回true)
-            _resultMark = _tempdt.Rows.Count > 0 && _tempdtldt.Rows.Count > 0;
+            if (selectid != 3)
+            {
+                _resultMark = _tempdt.Rows.Count > 0 && _tempdtldt.Rows.Count > 0;
+            }
+            else
+            {
+                _resultMark = _tempdt.Rows.Count > 0;
+            }
         }
 
         /// <summary>

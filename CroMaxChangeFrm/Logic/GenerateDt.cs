@@ -18,6 +18,14 @@ namespace CroMaxChangeFrm.Logic
         public DataTable Generatetemp(DataTable dt, int comselectid)
         {
             var resultdt=new DataTable();
+
+            //保存‘配方代码’字段,用于排除重复值
+            var colorcode = string.Empty;
+            //保存‘版本日期’字段,用于排除重复值
+            var confrimdt = string.Empty;
+            //保存‘层’字段,用于排除重复值
+            var layer = 0;
+
             try
             {
                 #region 旧系统使用
@@ -56,8 +64,8 @@ namespace CroMaxChangeFrm.Logic
                     }
                 }
                 #endregion
-
-                else
+                //以新系统模板纵向导出
+                else if(comselectid==2)
                 {
                     //获取表头临时表
                     resultdt = dtList.Get_NewTempdt();
@@ -65,20 +73,39 @@ namespace CroMaxChangeFrm.Logic
                     foreach (DataRow rows in dt.Rows)
                     {
                         var newrow = resultdt.NewRow();
-                        newrow[0] = rows[0];//ID
-                        newrow[1] = rows[1];//制造商
-                        newrow[2] = rows[2];//车型
-                        newrow[3] = rows[3];//涂层
-                        newrow[4] = rows[4];//颜色描述
-                        newrow[5] = rows[5];//内部色号
-                        newrow[6] = rows[6];//主配方色号（差异色)
-                        newrow[7] = rows[7];//差异色名称
-                        newrow[8] = rows[8];//颜色组别
-                        newrow[9] = rows[9];//标准色号
-                        newrow[10] = rows[10];//RGBValue
-                        newrow[11] = rows[11];//版本日期
-                        newrow[12] = rows[12];//层
+                        newrow[0] = rows[0];        //ID
+                        newrow[1] = rows[1];        //制造商
+                        newrow[2] = rows[2];        //车型
+                        newrow[3] = rows[3];        //涂层
+                        newrow[4] = rows[4];        //颜色描述
+                        newrow[5] = rows[5];        //内部色号
+                        newrow[6] = rows[6];        //主配方色号（差异色)
+                        newrow[7] = rows[7];        //差异色名称
+                        newrow[8] = rows[8];        //颜色组别
+                        newrow[9] = rows[9];        //标准色号
+                        newrow[10] = rows[10];      //RGBValue
+                        newrow[11] = rows[11];      //版本日期
+                        newrow[12] = rows[12];      //层
                         resultdt.Rows.Add(newrow);
+                    }
+                }
+                //以新系统模板横向导出
+                else if (comselectid == 3)
+                {
+                    //获取导出模板(横向)
+                    resultdt = dtList.Get_ExportVdt(); //dtList.Get_ErrorRecorddt();
+
+                    //先循环导入EXCEL数据源
+                    foreach (DataRow rows in dt.Rows)
+                    {
+                        //若循环获取的‘内部色号’与变量一致,即不用继续
+                        if (colorcode == Convert.ToString(rows[4]) && confrimdt == Convert.ToString(rows[9]) && layer == Convert.ToInt32(rows[10])) continue;
+                        //若不相同,先将当前循环行的值进行赋值至变量
+                        colorcode = Convert.ToString(rows[4]);
+                        confrimdt = Convert.ToString(rows[9]);
+                        layer = Convert.ToInt32(rows[10]);
+
+                        resultdt.Merge(GetVdt(rows,dt,resultdt));
                     }
                 }
             }
@@ -87,6 +114,48 @@ namespace CroMaxChangeFrm.Logic
                 resultdt.Rows.Clear();
                 resultdt.Columns.Clear();
             }
+            
+            return resultdt;
+        }
+
+        /// <summary>
+        /// 以横向方式导出使用
+        /// </summary>
+        /// <param name="rows"></param>
+        /// <param name="sourcedt"></param>
+        /// <param name="resultdt"></param>
+        /// <returns></returns>
+        private DataTable GetVdt(DataRow rows,DataTable sourcedt,DataTable resultdt)
+        {
+            //先将‘制造商’等表头相关信息插入,再插入色母等信息
+            var newrow = resultdt.NewRow();
+            newrow[0] = rows[0];//制造商
+            newrow[1] = rows[1];//车型
+            newrow[2] = rows[2];//涂层
+            newrow[3] = rows[3];//颜色描述
+            newrow[4] = rows[4];//内部色号
+            newrow[5] = rows[5];//主配方色号（差异色)
+            newrow[6] = rows[6];//颜色组别
+            newrow[7] = rows[7];//标准色号
+            newrow[8] = rows[8];//RGBValue
+            newrow[9] = rows[9];//版本日期
+            newrow[10] = rows[10];//层
+
+            //将‘色母’相关信息，插入至对应的项内
+            var rowsdtl = sourcedt.Select("内部色号='"+Convert.ToString(rows[4])+"' and 版本日期='"+ Convert.ToString(rows[9])+"' and 层='"+Convert.ToInt32(rows[10])+"'");
+            //if (rowsdtl.Length > 11)
+            //{
+            //    newrow[0] = rows[4];
+
+            //    //var a1 = Convert.ToString(rows[4]);
+            //    //var a = Convert.ToString(rows[9]);
+            //}
+            for (var i = 0; i < rowsdtl.Length; i++)
+            {
+                newrow[11 + i + i] = rowsdtl[i][11];        //色母编码
+                newrow[11 + i + i + 1] = rowsdtl[i][13];    //色母量(保留两位小数)
+            }
+            resultdt.Rows.Add(newrow);
             return resultdt;
         }
 

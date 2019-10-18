@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.IO;
 using CroMaxChangeFrm.DB;
 using NPOI.SS.UserModel;
@@ -16,14 +17,15 @@ namespace CroMaxChangeFrm.Logic
         /// 打开及导入至DT
         /// </summary>
         /// <param name="fileAddress"></param>
+        /// <param name="selectid"></param>
         /// <returns></returns>
-        public DataTable OpenExcelImporttoDt(string fileAddress)
+        public DataTable OpenExcelImporttoDt(string fileAddress,int selectid)
         {
             var dt=new DataTable();
             try
             {
                 //使用NPOI技术进行导入EXCEL至DATATABLE
-                var importExcelDt = OpenExcelToDataTable(fileAddress);
+                var importExcelDt = OpenExcelToDataTable(fileAddress,selectid);
                 //将从EXCEL过来的记录集为空的行清除
                 dt = RemoveEmptyRows(importExcelDt);
             }
@@ -35,13 +37,22 @@ namespace CroMaxChangeFrm.Logic
              return dt;
         }
 
-        private DataTable OpenExcelToDataTable(string fileAddress)
+        private DataTable OpenExcelToDataTable(string fileAddress,int selectid)
         {
             IWorkbook wk;
+            //定义列ID
+            var colid = 0;
             //定义ID变量
             var id = 1;
+            //定义内部色号
+            var code = string.Empty;
+            //定义版本日期
+            var confirmdt = string.Empty;
+            //定义层
+            var layer = 0;
             //创建表标题
-            var dt = dtList.Get_Importdt();
+            var dt=new DataTable();
+            dt = selectid == 3 ? dtList.Get_ImportHdt() : dtList.Get_Importdt();
 
             using (var fsRead = File.OpenRead(fileAddress))
             {
@@ -61,13 +72,15 @@ namespace CroMaxChangeFrm.Logic
                     if (row == null) continue;
 
                     //读取每列(固定了共列值37)  (固定列为34列=>新导入模板使用 add date:20191009)
+                    colid = selectid == 3 ? 17 : 35;
 
-                    for (var j = 0; j < 35/*37*//*row.Cells.Count*/; j++)
+                    for (var j = 0; j < colid/*37*//*row.Cells.Count*/; j++)
                     {
-                        if (j == 0)
+                        if (j == 0 && selectid !=3)
                         {
                             dr[0] = id;
                         }
+
                         else
                         {
                             //循环获取行中的单元格
@@ -75,11 +88,38 @@ namespace CroMaxChangeFrm.Logic
                             var cellValue = GetCellValue(cell);
                             if (cellValue == string.Empty)
                             {
-                                continue;
+                                if (j == 4 && selectid == 3)
+                                {
+                                    dr[j] = code;
+                                }
+                                else if (j == 9 && selectid == 3)
+                                {
+                                    dr[j] = confirmdt;
+                                }
+                                else if (j == 10 && selectid == 3)
+                                {
+                                    dr[j] = layer;
+                                }
+                                else
+                                {
+                                    continue;
+                                }
                             }
                             else
                             {
                                 dr[j] = cellValue;
+                                if (j == 4 && selectid == 3)
+                                {
+                                    code = Convert.ToString(dr[j]);
+                                }
+                                else if (j == 9 && selectid == 3)
+                                {
+                                    confirmdt = Convert.ToString(dr[j]);
+                                }
+                                else if (j == 10 && selectid == 3)
+                                {
+                                    layer = Convert.ToInt32(dr[j]);
+                                }
                             }
 
                             //全为空就不取
@@ -96,7 +136,8 @@ namespace CroMaxChangeFrm.Logic
                         dt.Rows.Add(dr);
                     }
                     //自增ID值
-                    id++;
+                    if(selectid!=3)
+                        id++;
                 }
             }
             return dt;
