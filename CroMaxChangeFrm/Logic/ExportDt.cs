@@ -141,7 +141,7 @@ namespace CroMaxChangeFrm.Logic
                         {
                             switch (j)
                             {
-                                #region SetCellValue 新系统模板使用
+                                #region SetCellValue 新系统纵向模板使用
                                 case 0:
                                     row.CreateCell(j).SetCellValue("制造商");
                                     break;
@@ -331,6 +331,11 @@ namespace CroMaxChangeFrm.Logic
                                     {
                                         row.CreateCell(k, CellType.Numeric).SetCellValue(Convert.ToDouble(temp.Rows[j][k]));
                                     }
+                                    else
+                                    {
+                                        //除‘色母量’以及‘累积量’外的值的转换赋值 或 横向导出时
+                                        row.CreateCell(k, CellType.String).SetCellValue(Convert.ToString(temp.Rows[j][k]));
+                                    }
                                 }
                                 else if(comselectid==2)
                                 {
@@ -338,8 +343,13 @@ namespace CroMaxChangeFrm.Logic
                                     {
                                         row.CreateCell(k, CellType.Numeric).SetCellValue(Convert.ToDouble(temp.Rows[j][k]));
                                     }
+                                    else
+                                    {
+                                        //除‘色母量’以及‘累积量’外的值的转换赋值 或 横向导出时
+                                        row.CreateCell(k, CellType.String).SetCellValue(Convert.ToString(temp.Rows[j][k]));
+                                    }
                                 }
-                                else
+                                else if(comselectid==3)
                                 {
                                     //除‘色母量’以及‘累积量’外的值的转换赋值 或 横向导出时
                                     row.CreateCell(k, CellType.String).SetCellValue(Convert.ToString(temp.Rows[j][k]));
@@ -442,7 +452,7 @@ namespace CroMaxChangeFrm.Logic
                     newrows[7] = i == 0 ? rows[8] : DBNull.Value;   //颜色组别
                     newrows[8] = i == 0 ? rows[9] : DBNull.Value;   //标准色号
                     newrows[9] = i == 0 ? rows[10] : DBNull.Value;   //RBGValue
-                    newrows[10] = i == 0 ? Convert.ToDateTime(rows[11]) : Convert.ToDateTime(DBNull.Value);   //版本日期
+                    newrows[10] = i == 0 ? rows[11] : DBNull.Value;   //版本日期
                     newrows[11] = i == 0 ? rows[12] : DBNull.Value;   //层
 
                     newrows[12] = emptyrow[i][1];   //色母编码
